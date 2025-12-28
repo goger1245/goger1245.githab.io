@@ -10,18 +10,14 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <!-- INTRO: System awakening -->
     <div class="intro-screen" id="introScreen">
         <canvas id="introCanvas"></canvas>
         <div class="intro-hint" id="introHint">Move to initialize</div>
     </div>
 
-    <!-- MAIN: System interface -->
     <div class="system-interface" id="systemInterface" hidden>
-        <!-- Background system grid -->
         <canvas id="bgCanvas" class="bg-canvas"></canvas>
         
-        <!-- System status -->
         <div class="system-status">
             <div class="status-line">
                 <span class="status-label">SYSTEM</span>
@@ -37,7 +33,6 @@
             </div>
         </div>
 
-        <!-- Navigation (minimal) -->
         <nav class="system-nav" id="systemNav">
             <button class="nav-node" data-section="about">01_ABOUT</button>
             <button class="nav-node" data-section="skills">02_SKILLS</button>
@@ -45,27 +40,27 @@
             <button class="nav-node" data-section="contact">04_CONTACT</button>
         </nav>
 
-        <!-- Sections -->
         <section class="system-section" id="about">
-            <div class="section-container">
+            <div class="section-container about-container">
+                <canvas id="aboutAvatarCanvas" class="about-avatar-canvas"></canvas>
                 <div class="log-output">
                     <div class="log-line" data-delay="0">
                         <span class="log-prefix">&gt;</span>
                         <span class="log-text">role: Software Engineer</span>
                     </div>
-                    <div class="log-line" data-delay="400">
+                    <div class="log-line" data-delay="1200">
                         <span class="log-prefix">&gt;</span>
                         <span class="log-text">focus: Architecture / Frontend Systems / Performance</span>
                     </div>
-                    <div class="log-line" data-delay="800">
+                    <div class="log-line" data-delay="2400">
                         <span class="log-prefix">&gt;</span>
                         <span class="log-text">mindset: Precision over noise</span>
                     </div>
-                    <div class="log-line" data-delay="1200">
+                    <div class="log-line" data-delay="3600">
                         <span class="log-prefix">&gt;</span>
                         <span class="log-text">approach: Code as interface, architecture as art</span>
                     </div>
-                    <div class="log-line" data-delay="1600">
+                    <div class="log-line" data-delay="4800">
                         <span class="log-prefix">&gt;</span>
                         <span class="log-text">status: Available for complex challenges</span>
                     </div>
@@ -125,6 +120,7 @@
     <script src="components/Node.js"></script>
     <script src="components/Line.js"></script>
     <script src="components/ParticleText.js"></script>
+    <script src="components/AvatarParticles.js"></script>
     <script src="scripts/animation.js"></script>
     <script src="scripts/nodes.js"></script>
     <script src="scripts/main.js"></script>

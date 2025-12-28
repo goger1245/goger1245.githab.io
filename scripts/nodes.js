@@ -23,12 +23,16 @@
     } = opts;
 
     const mousePos = new Vector2();
+    let currentSection = "about";
+    let isStarted = false;
+    let aboutAvatar = null;
+    let avatarStarted = false;
 
-    // Background grid
     const bgCtx = bgCanvas.getContext("2d");
     let bgNodes = [];
     let bgLines = [];
-    let currentSection = "about";
+    let lastBgUpdate = 0;
+    const BG_UPDATE_INTERVAL = 1000 / 20;
 
     function initBackground() {
       bgCanvas.width = window.innerWidth;
@@ -47,7 +51,6 @@
         }
       }
 
-      // Horizontal lines
       for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols - 1; j++) {
           const idx = i * cols + j;
@@ -55,7 +58,7 @@
         }
       }
 
-      // Reduced vertical lines
+      // Reduced vertical lines for performance
       for (let i = 0; i < rows - 1; i += 2) {
         for (let j = 0; j < cols; j += 2) {
           const idx = i * cols + j;
@@ -64,10 +67,8 @@
       }
     }
 
-    let lastBgUpdate = 0;
-    const bgUpdateInterval = 1000 / 30;
     function tickBackground(ts = 0) {
-      if (ts - lastBgUpdate < bgUpdateInterval) {
+      if (ts - lastBgUpdate < BG_UPDATE_INTERVAL) {
         requestAnimationFrame(tickBackground);
         return;
       }
@@ -86,14 +87,20 @@
       requestAnimationFrame(tickBackground);
     }
 
-    // Navigation / sections
     function showSection(name) {
       currentSection = name;
+      
       sections.forEach((s) => s.classList.remove("active"));
       document.getElementById(name)?.classList.add("active");
 
       navButtons.forEach((b) => b.classList.remove("active"));
       document.querySelector(`.nav-node[data-section="${name}"]`)?.classList.add("active");
+
+      // Start avatar animation when switching to About section (only first time)
+      if (name === "about" && aboutAvatar && aboutAvatar.isLoaded && !aboutAvatar.startTime) {
+        avatarStarted = true;
+        aboutAvatar.startTime = Date.now();
+      }
 
       if (systemModeEl) systemModeEl.textContent = name.toUpperCase();
     }
@@ -104,10 +111,6 @@
       });
     }
 
-    // About log + avatar
-    let aboutAvatar = null;
-    let avatarStarted = false;
-    
     async function setupAbout() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -130,37 +133,48 @@
         lastMouseX = e.clientX;
       });
 
-      // Initialize avatar
       if (aboutAvatarCanvas) {
-        aboutAvatarCanvas.width = 250;
-        aboutAvatarCanvas.height = 250;
-        
+        aboutAvatarCanvas.width = 300;
+        aboutAvatarCanvas.height = 300;
+
         aboutAvatar = new AvatarParticles(aboutAvatarCanvas, 'src/converted_image.png', {
           particleSize: 2,
-          samplingRate: 6,
-          formSpeed: 0.12,
-          targetSize: 200,
-          glowDuration: 1500,
+          samplingRate: 4,
+          targetSize: 280,
         });
 
         try {
           await aboutAvatar.load();
-          console.log(`Avatar loaded: ${aboutAvatar.particles.length} particles`);
+          showSection("about");
         } catch (err) {
-          console.warn('Avatar image failed to load:', err);
+          // Avatar failed to load - silently continue
         }
       }
     }
 
-    function tickAvatar() {
-      if (!aboutAvatar || !aboutAvatarCanvas) return;
-      
-      // Start avatar animation when About section is active
-      if (currentSection === "about" && !avatarStarted) {
-        avatarStarted = true;
+    let lastAvatarUpdate = 0;
+    const AVATAR_UPDATE_INTERVAL = 1000 / 30;
+
+    function tickAvatar(ts = 0) {
+      if (!aboutAvatar || !aboutAvatarCanvas) {
+        requestAnimationFrame(tickAvatar);
+        return;
       }
 
-      if (avatarStarted) {
+      if (!aboutAvatar.isLoaded) {
+        requestAnimationFrame(tickAvatar);
+        return;
+      }
+
+      if (ts - lastAvatarUpdate < AVATAR_UPDATE_INTERVAL) {
+        requestAnimationFrame(tickAvatar);
+        return;
+      }
+      lastAvatarUpdate = ts;
+
+      const shouldAnimate = avatarStarted && aboutAvatar && aboutAvatar.isLoaded && !!aboutAvatar.startTime;
+
+      if (shouldAnimate) {
         const ctx = aboutAvatarCanvas.getContext("2d");
         ctx.clearRect(0, 0, aboutAvatarCanvas.width, aboutAvatarCanvas.height);
         aboutAvatar.update();
@@ -170,9 +184,9 @@
       requestAnimationFrame(tickAvatar);
     }
 
-    // Skills canvas
     function setupSkills() {
       if (!skillsCanvas) return;
+      
       const ctx = skillsCanvas.getContext("2d");
       skillsCanvas.width = window.innerWidth;
       skillsCanvas.height = window.innerHeight;
@@ -186,7 +200,11 @@
         { label: "Performance", x: 0.5, y: 0.5 },
       ];
 
-      const skillNodes = skills.map((s) => new Node(skillsCanvas.width * s.x, skillsCanvas.height * s.y, s.label));
+      const skillNodes = skills.map((s) => 
+        new Node(skillsCanvas.width * s.x, skillsCanvas.height * s.y, s.label)
+      );
+      
+      // Create connections between nearby nodes
       const skillLines = [];
       for (let i = 0; i < skillNodes.length; i++) {
         for (let j = i + 1; j < skillNodes.length; j++) {
@@ -198,14 +216,15 @@
 
       let hoveredSkill = null;
       let lastSkillsUpdate = 0;
-      const skillsUpdateInterval = 1000 / 40;
+      const SKILLS_UPDATE_INTERVAL = 1000 / 30;
 
       function tickSkills(ts = 0) {
         if (currentSection !== "skills") {
           requestAnimationFrame(tickSkills);
           return;
         }
-        if (ts - lastSkillsUpdate < skillsUpdateInterval) {
+        
+        if (ts - lastSkillsUpdate < SKILLS_UPDATE_INTERVAL) {
           requestAnimationFrame(tickSkills);
           return;
         }
@@ -232,7 +251,10 @@
           const highlight = hoveredSkill && (line.nodeA === hoveredSkill || line.nodeB === hoveredSkill);
           line.draw(ctx, highlight);
         }
-        for (const node of skillNodes) node.draw(ctx, node === hoveredSkill);
+        
+        for (const node of skillNodes) {
+          node.draw(ctx, node === hoveredSkill);
+        }
 
         if (hoveredSkill) {
           if (skillDetailTitle) skillDetailTitle.textContent = hoveredSkill.label;
@@ -250,7 +272,6 @@
       requestAnimationFrame(tickSkills);
     }
 
-    // Projects “mode switch”
     function setupProjects() {
       projectNodes.forEach((node, i) => {
         node.addEventListener("mouseenter", () => {
@@ -259,6 +280,7 @@
           bgLines.forEach((line) => (line.opacity = 0.05 + i * 0.05));
           if (systemModeEl) systemModeEl.textContent = `PROJECT_0${i + 1}`;
         });
+        
         node.addEventListener("mouseleave", () => {
           node.classList.remove("active");
           bgLines.forEach((line) => (line.opacity = 0.2));
@@ -267,12 +289,13 @@
       });
     }
 
-    // Contact reveal
     function setupContact() {
       let revealIndex = 0;
       let lastReveal = 0;
+      
       document.addEventListener("mousemove", () => {
         if (currentSection !== "contact") return;
+        
         const now = Date.now();
         if (now - lastReveal > 300 && revealIndex < revealItems.length) {
           revealItems[revealIndex].classList.add("revealed");
@@ -289,6 +312,7 @@
         const m = String(now.getMinutes()).padStart(2, "0");
         if (systemTimeEl) systemTimeEl.textContent = `${h}:${m}`;
       }
+      
       updateTime();
       setInterval(updateTime, 10000);
     }
@@ -303,34 +327,39 @@
     function onResize() {
       bgCanvas.width = window.innerWidth;
       bgCanvas.height = window.innerHeight;
+      
       if (skillsCanvas) {
         skillsCanvas.width = window.innerWidth;
         skillsCanvas.height = window.innerHeight;
       }
+      
       initBackground();
     }
 
     function start() {
+      if (isStarted) return;
+      isStarted = true;
+
       systemInterface.hidden = false;
       document.body.classList.add("cursor-ready");
+      
       initBackground();
       requestAnimationFrame(tickBackground);
+      
       setupNav();
       setupAbout();
       setupSkills();
       setupProjects();
       setupContact();
       setupTime();
+      
       requestAnimationFrame(tickAvatar);
-      showSection("about");
     }
 
     return { start, onMouseMove, onResize, showSection };
   }
 
   global.SystemNodes = Object.freeze({
-    createSystemController,
+    createSystemController: createSystemController
   });
 })(window);
-
-
