@@ -1,13 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Business Card Website</title>
-        <link rel="stylesheet" href="CSS/style.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Interface</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- INTRO: System awakening -->
+    <div class="intro-screen" id="introScreen">
+        <canvas id="introCanvas"></canvas>
+        <div class="intro-hint" id="introHint">Move to initialize</div>
+    </div>
 
-    </body>
+    <!-- MAIN: System interface -->
+    <div class="system-interface" id="systemInterface" hidden>
+        <!-- Background system grid -->
+        <canvas id="bgCanvas" class="bg-canvas"></canvas>
+        
+        <!-- System status -->
+        <div class="system-status">
+            <div class="status-line">
+                <span class="status-label">SYSTEM</span>
+                <span class="status-value" id="systemMode">IDLE</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">NODE</span>
+                <span class="status-value" id="activeNode">—</span>
+            </div>
+            <div class="status-line">
+                <span class="status-label">TIME</span>
+                <span class="status-value" id="systemTime">00:00</span>
+            </div>
+        </div>
 
-    </html>
+        <!-- Navigation (minimal) -->
+        <nav class="system-nav" id="systemNav">
+            <button class="nav-node" data-section="about">01_ABOUT</button>
+            <button class="nav-node" data-section="skills">02_SKILLS</button>
+            <button class="nav-node" data-section="projects">03_PROJECTS</button>
+            <button class="nav-node" data-section="contact">04_CONTACT</button>
+        </nav>
+
+        <!-- Sections -->
+        <section class="system-section" id="about">
+            <div class="section-container">
+                <div class="log-output">
+                    <div class="log-line" data-delay="0">
+                        <span class="log-prefix">&gt;</span>
+                        <span class="log-text">role: Software Engineer</span>
+                    </div>
+                    <div class="log-line" data-delay="400">
+                        <span class="log-prefix">&gt;</span>
+                        <span class="log-text">focus: Architecture / Frontend Systems / Performance</span>
+                    </div>
+                    <div class="log-line" data-delay="800">
+                        <span class="log-prefix">&gt;</span>
+                        <span class="log-text">mindset: Precision over noise</span>
+                    </div>
+                    <div class="log-line" data-delay="1200">
+                        <span class="log-prefix">&gt;</span>
+                        <span class="log-text">approach: Code as interface, architecture as art</span>
+                    </div>
+                    <div class="log-line" data-delay="1600">
+                        <span class="log-prefix">&gt;</span>
+                        <span class="log-text">status: Available for complex challenges</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="system-section" id="skills">
+            <div class="section-container">
+                <canvas id="skillsCanvas" class="skills-canvas"></canvas>
+                <div class="skill-detail" id="skillDetail">
+                    <div class="detail-title">—</div>
+                    <div class="detail-desc">Hover nodes to explore</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="system-section" id="projects">
+            <div class="section-container">
+                <div class="projects-list">
+                    <div class="project-node" data-project="0">
+                        <div class="project-id">PROJECT_01</div>
+                        <div class="project-title">Interactive Dashboard</div>
+                        <div class="project-meta">Real-time systems / WebSockets / State management</div>
+                    </div>
+                    <div class="project-node" data-project="1">
+                        <div class="project-id">PROJECT_02</div>
+                        <div class="project-title">UI Architecture</div>
+                        <div class="project-meta">Design systems / Tokens / Component library</div>
+                    </div>
+                    <div class="project-node" data-project="2">
+                        <div class="project-id">PROJECT_03</div>
+                        <div class="project-title">Performance Optimization</div>
+                        <div class="project-meta">Profiling / Core Web Vitals / Bundle analysis</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="system-section" id="contact">
+            <div class="section-container">
+                <div class="contact-message">
+                    <p class="message-line">If this felt different —</p>
+                    <p class="message-line">that's the point.</p>
+                </div>
+                <div class="contact-reveal" id="contactReveal">
+                    <div class="contact-item reveal-item">email@example.com</div>
+                    <div class="contact-item reveal-item">github.com/username</div>
+                    <div class="contact-item reveal-item">linkedin.com/in/username</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="components/Node.js"></script>
+    <script src="components/Line.js"></script>
+    <script src="components/ParticleText.js"></script>
+    <script src="scripts/animation.js"></script>
+    <script src="scripts/nodes.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
