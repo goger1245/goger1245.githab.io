@@ -14,6 +14,7 @@
   const sections = Array.from(document.querySelectorAll(".system-section"));
   const logLines = Array.from(document.querySelectorAll(".log-line"));
   const aboutAvatarCanvas = document.getElementById("aboutAvatarCanvas");
+  const avatarName = document.querySelector(".avatar-name");
   const skillsCanvas = document.getElementById("skillsCanvas");
   const skillDetailTitle = document.querySelector("#skillDetail .detail-title");
   const skillDetailDesc = document.querySelector("#skillDetail .detail-desc");
@@ -45,6 +46,7 @@
       sections,
       logLines,
       aboutAvatarCanvas,
+      avatarName,
       skillsCanvas,
       skillDetailTitle,
       skillDetailDesc,

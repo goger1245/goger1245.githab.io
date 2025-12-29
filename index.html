@@ -42,27 +42,35 @@
 
         <section class="system-section" id="about">
             <div class="section-container about-container">
-                <canvas id="aboutAvatarCanvas" class="about-avatar-canvas"></canvas>
+                <div class="avatar-wrapper">
+                    <div class="avatar-frame">
+                        <canvas id="aboutAvatarCanvas" class="about-avatar-canvas"></canvas>
+                    </div>
+                    <div class="avatar-name log-line" data-delay="5400">
+                        <span class="log-prefix">&gt;</span>
+                        <span class="log-text">name: Goga</span>
+                    </div>
+                </div>
                 <div class="log-output">
                     <div class="log-line" data-delay="0">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">role: Software Engineer</span>
+                        <span class="log-text">role: Python-JS Developer / Full Stack</span>
                     </div>
                     <div class="log-line" data-delay="1200">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">focus: Architecture / Frontend Systems / Performance</span>
+                        <span class="log-text">focus: Automation / Infrastructure / Backend / Frontend</span>
                     </div>
                     <div class="log-line" data-delay="2400">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">mindset: Precision over noise</span>
+                        <span class="log-text">stack: Bots / Parsers / Checkers / Integrations / websites and much more</span>
                     </div>
                     <div class="log-line" data-delay="3600">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">approach: Code as interface, architecture as art</span>
+                        <span class="log-text">approach: Open-source enthusiast / Continuous learner / Sociable person</span>
                     </div>
                     <div class="log-line" data-delay="4800">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">status: Available for complex challenges</span>
+                        <span class="log-text">status: 3+ years experience / Available for complex projects</span>
                     </div>
                 </div>
             </div>
@@ -81,20 +89,39 @@
         <section class="system-section" id="projects">
             <div class="section-container">
                 <div class="projects-list">
-                    <div class="project-node" data-project="0">
-                        <div class="project-id">PROJECT_01</div>
-                        <div class="project-title">Interactive Dashboard</div>
-                        <div class="project-meta">Real-time systems / WebSockets / State management</div>
+                    <div class="projects-col">
+                        <div class="project-node" data-project="0">
+                            <div class="project-id">PROJECT_01</div>
+                            <div class="project-title">Interactive Dashboard</div>
+                            <div class="project-meta">Real-time systems / WebSockets / State management</div>
+                        </div>
+                        <div class="project-node" data-project="1">
+                            <div class="project-id">PROJECT_02</div>
+                            <div class="project-title">UI Architecture</div>
+                            <div class="project-meta">Design systems / Tokens / Component library</div>
+                        </div>
+                        <div class="project-node" data-project="2">
+                            <div class="project-id">PROJECT_03</div>
+                            <div class="project-title">Performance Optimization</div>
+                            <div class="project-meta">Profiling / Core Web Vitals / Bundle analysis</div>
+                        </div>
                     </div>
-                    <div class="project-node" data-project="1">
-                        <div class="project-id">PROJECT_02</div>
-                        <div class="project-title">UI Architecture</div>
-                        <div class="project-meta">Design systems / Tokens / Component library</div>
-                    </div>
-                    <div class="project-node" data-project="2">
-                        <div class="project-id">PROJECT_03</div>
-                        <div class="project-title">Performance Optimization</div>
-                        <div class="project-meta">Profiling / Core Web Vitals / Bundle analysis</div>
+                    <div class="projects-col">
+                        <div class="project-node" data-project="3">
+                            <div class="project-id">PROJECT_04</div>
+                            <div class="project-title">Automation Toolkit</div>
+                            <div class="project-meta">Bots / Parsers / Integrations / CLI tools</div>
+                        </div>
+                        <div class="project-node" data-project="4">
+                            <div class="project-id">PROJECT_05</div>
+                            <div class="project-title">API Platform</div>
+                            <div class="project-meta">REST / Auth / Data modeling / Observability</div>
+                        </div>
+                        <div class="project-node" data-project="5">
+                            <div class="project-id">PROJECT_06</div>
+                            <div class="project-title">Realtime Experience</div>
+                            <div class="project-meta">WebSockets / Event-driven / UI state</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -103,13 +130,24 @@
         <section class="system-section" id="contact">
             <div class="section-container">
                 <div class="contact-message">
-                    <p class="message-line">If this felt different —</p>
-                    <p class="message-line">that's the point.</p>
+                    <p class="message-line contact-title">Contacts — Forums</p>
                 </div>
                 <div class="contact-reveal" id="contactReveal">
-                    <div class="contact-item reveal-item">email@example.com</div>
-                    <div class="contact-item reveal-item">github.com/username</div>
-                    <div class="contact-item reveal-item">linkedin.com/in/username</div>
+                    <a class="contact-item reveal-item" href="https://lolz.live/members/8688653/" target="_blank" rel="noopener noreferrer">
+                        <span class="contact-label">Lolz</span>
+                    </a>
+                    <a class="contact-item reveal-item" href="https://github.com/goger1245" target="_blank" rel="noopener noreferrer">
+                        <img class="contact-icon" src="src/github.svg" alt="" aria-hidden="true">
+                        <span class="contact-label">GitHub</span>
+                    </a>
+                    <a class="contact-item reveal-item" href="https://t.me/G_o_g1ch" target="_blank" rel="noopener noreferrer">
+                        <img class="contact-icon" src="src/telegram.svg" alt="" aria-hidden="true">
+                        <span class="contact-label">Telegram</span>
+                    </a>
+                    <a class="contact-item reveal-item" href="https://t.me/GogiProger" target="_blank" rel="noopener noreferrer">
+                        <img class="contact-icon" src="src/telegram.svg" alt="" aria-hidden="true">
+                        <span class="contact-label">Tg Channel</span>
+                    </a>
                 </div>
             </div>
         </section>

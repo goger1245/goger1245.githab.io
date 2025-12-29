@@ -35,7 +35,6 @@
       });
     }
 
-    // Samples image pixels and creates particles with random delays for fade-in effect
     generateParticles() {
       const tempCanvas = document.createElement('canvas');
       const tempCtx = tempCanvas.getContext('2d');
@@ -99,7 +98,6 @@
       this.imageData = { centerX, centerY, drawWidth, drawHeight };
     }
 
-    // Updates particle opacities with staggered fade-in timing
     update() {
       if (!this.isLoaded || !this.startTime) return;
 
@@ -125,12 +123,11 @@
         }
       }
 
-      // Sync completion with text animation timing
       const TARGET_END_TIME = 4800;
       if (allVisible && !this.isFormed) {
         this.isFormed = true;
         const timeUntilText = Math.max(0, TARGET_END_TIME - elapsed);
-        
+
         if (this.onComplete) {
           setTimeout(() => this.onComplete(), timeUntilText);
         }
@@ -142,8 +139,32 @@
 
       this.ctx.save();
 
+      const borderRadius = 20;
+      const { centerX, centerY, drawWidth, drawHeight } = this.imageData || {
+        centerX: 0,
+        centerY: 0,
+        drawWidth: this.canvas.width,
+        drawHeight: this.canvas.height,
+      };
+      const left = centerX;
+      const top = centerY;
+      const right = centerX + drawWidth;
+      const bottom = centerY + drawHeight;
+
+      this.ctx.beginPath();
+      this.ctx.moveTo(left + borderRadius, top);
+      this.ctx.lineTo(right - borderRadius, top);
+      this.ctx.quadraticCurveTo(right, top, right, top + borderRadius);
+      this.ctx.lineTo(right, bottom - borderRadius);
+      this.ctx.quadraticCurveTo(right, bottom, right - borderRadius, bottom);
+      this.ctx.lineTo(left + borderRadius, bottom);
+      this.ctx.quadraticCurveTo(left, bottom, left, bottom - borderRadius);
+      this.ctx.lineTo(left, top + borderRadius);
+      this.ctx.quadraticCurveTo(left, top, left + borderRadius, top);
+      this.ctx.closePath();
+      this.ctx.clip();
+
       const visibleParticles = this.particles.filter(p => p.opacity > 0);
-      const cornerRadius = 3;
       const halfSize = this.particleSize / 2;
       const colorRegex = /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/;
 
@@ -159,13 +180,7 @@
         const x = particle.x - halfSize;
         const y = particle.y - halfSize;
         
-        if (this.ctx.roundRect) {
-          this.ctx.beginPath();
-          this.ctx.roundRect(x, y, particle.size, particle.size, cornerRadius);
-          this.ctx.fill();
-        } else {
-          this.ctx.fillRect(x, y, particle.size, particle.size);
-        }
+        this.ctx.fillRect(x, y, particle.size, particle.size);
       }
 
       this.ctx.restore();

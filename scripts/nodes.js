@@ -15,6 +15,7 @@
       sections,
       logLines,
       aboutAvatarCanvas,
+      avatarName,
       skillsCanvas,
       skillDetailTitle,
       skillDetailDesc,
@@ -96,7 +97,6 @@
       navButtons.forEach((b) => b.classList.remove("active"));
       document.querySelector(`.nav-node[data-section="${name}"]`)?.classList.add("active");
 
-      // Start avatar animation when switching to About section (only first time)
       if (name === "about" && aboutAvatar && aboutAvatar.isLoaded && !aboutAvatar.startTime) {
         avatarStarted = true;
         aboutAvatar.startTime = Date.now();
@@ -121,6 +121,7 @@
         });
       });
       logLines.forEach((l) => observer.observe(l));
+      if (avatarName) observer.observe(avatarName);
 
       let lastMouseX = 0;
       document.addEventListener("mousemove", (e) => {
@@ -138,8 +139,8 @@
         aboutAvatarCanvas.height = 300;
 
         aboutAvatar = new AvatarParticles(aboutAvatarCanvas, 'src/converted_image.png', {
-          particleSize: 2,
-          samplingRate: 4,
+          particleSize: 1.9,
+          samplingRate: 3,
           targetSize: 280,
         });
 
@@ -147,7 +148,7 @@
           await aboutAvatar.load();
           showSection("about");
         } catch (err) {
-          // Avatar failed to load - silently continue
+          // Avatar image failed to load
         }
       }
     }
@@ -277,8 +278,12 @@
         node.addEventListener("mouseenter", () => {
           projectNodes.forEach((n) => n.classList.remove("active"));
           node.classList.add("active");
-          bgLines.forEach((line) => (line.opacity = 0.05 + i * 0.05));
-          if (systemModeEl) systemModeEl.textContent = `PROJECT_0${i + 1}`;
+          const HOVER_BG_OPACITY = 0.1;
+          bgLines.forEach((line) => (line.opacity = HOVER_BG_OPACITY));
+          if (systemModeEl) {
+            const projectId = node.querySelector(".project-id")?.textContent?.trim();
+            systemModeEl.textContent = projectId || currentSection.toUpperCase();
+          }
         });
         
         node.addEventListener("mouseleave", () => {
