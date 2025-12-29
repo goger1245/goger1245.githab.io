@@ -504,6 +504,10 @@ body {
   z-index: 1;
 }
 
+.contact-icon--lolz {
+  border-radius: 30px;
+}
+
 .contact-label {
   position: absolute;
   left: 0;
