@@ -18,7 +18,7 @@
       canvas.width = 800;
       canvas.height = 100;
       
-      ctx.font = "32px Space Mono";
+      ctx.font = "32px Inter, Space Mono, monospace";
       ctx.fillStyle = "#fff";
       ctx.textAlign = "center";
       ctx.fillText(this.text, 400, 60);

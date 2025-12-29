@@ -2,6 +2,8 @@
   if (!window.Components) window.Components = {};
   if (!window.SystemComponents) window.SystemComponents = {};
 
+  const SPEED_MULTIPLIER = 1.5;
+
   class AvatarParticles {
     constructor(canvas, imagePath, options = {}) {
       this.canvas = canvas;
@@ -63,7 +65,7 @@
 
       const particlesData = [];
       const ALPHA_THRESHOLD = 50;
-      const MAX_ANIMATION_DURATION = 4800;
+      const MAX_ANIMATION_DURATION = Math.round(4800 / SPEED_MULTIPLIER);
       
       for (let y = 0; y < drawHeight; y += this.samplingRate) {
         for (let x = 0; x < drawWidth; x += this.samplingRate) {
@@ -110,7 +112,7 @@
       }
       this.lastUpdateTime = now;
 
-      const FADE_DURATION = 400;
+      const FADE_DURATION = Math.round(400 / SPEED_MULTIPLIER);
       let allVisible = true;
 
       for (const particle of this.particles) {
@@ -123,7 +125,7 @@
         }
       }
 
-      const TARGET_END_TIME = 4800;
+      const TARGET_END_TIME = Math.round(4800 / SPEED_MULTIPLIER);
       if (allVisible && !this.isFormed) {
         this.isFormed = true;
         const timeUntilText = Math.max(0, TARGET_END_TIME - elapsed);

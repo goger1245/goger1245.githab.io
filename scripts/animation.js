@@ -93,7 +93,7 @@
         } else {
           introPhase = "text";
           introText = new ParticleText(
-            "Code as interface",
+            global.SystemI18n?.t?.("intro_particle_text") ?? "Code as interface",
             introCanvas.width / 2,
             introCanvas.height / 2
           );

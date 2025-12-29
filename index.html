@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Interface</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles/main.css">
-</head>
-<body>
+    </head>
+    <body>
+    <button class="lang-toggle" id="langToggle" type="button" aria-label="Switch language"></button>
+
     <div class="intro-screen" id="introScreen">
         <canvas id="introCanvas"></canvas>
-        <div class="intro-hint" id="introHint">Move to initialize</div>
+        <div class="intro-hint" id="introHint" data-i18n="intro_hint">Move to initialize</div>
     </div>
 
     <div class="system-interface" id="systemInterface" hidden>
@@ -34,10 +36,11 @@
         </div>
 
         <nav class="system-nav" id="systemNav">
-            <button class="nav-node" data-section="about">01_ABOUT</button>
-            <button class="nav-node" data-section="skills">02_SKILLS</button>
-            <button class="nav-node" data-section="projects">03_PROJECTS</button>
-            <button class="nav-node" data-section="contact">04_CONTACT</button>
+            <button class="nav-node" data-section="about" data-i18n="nav_about">01_ABOUT</button>
+            <button class="nav-node" data-section="skills" data-i18n="nav_skills">02_SKILLS</button>
+            <button class="nav-node" data-section="projects" data-i18n="nav_projects">03_DETAILS</button>
+            <button class="nav-node" data-section="payment" data-i18n="nav_payment">04_PAYMENT</button>
+            <button class="nav-node" data-section="contact" data-i18n="nav_contact">05_CONTACT</button>
         </nav>
 
         <section class="system-section" id="about">
@@ -48,29 +51,29 @@
                     </div>
                     <div class="avatar-name log-line" data-delay="5400">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">name: Goga</span>
+                        <span class="log-text" data-i18n="about_name">name: Goga</span>
                     </div>
                 </div>
                 <div class="log-output">
                     <div class="log-line" data-delay="0">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">role: Python-JS Developer / Full Stack</span>
+                        <span class="log-text" data-i18n="about_role">role: Python-JS Developer / Full Stack</span>
                     </div>
                     <div class="log-line" data-delay="1200">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">focus: Automation / Infrastructure / Backend / Frontend</span>
+                        <span class="log-text" data-i18n="about_focus">focus: Automation / Infrastructure / Backend / Frontend</span>
                     </div>
                     <div class="log-line" data-delay="2400">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">stack: Bots / Parsers / Checkers / Integrations / websites and much more</span>
+                        <span class="log-text" data-i18n="about_stack">stack: Bots / Parsers / Checkers / Integrations / Websites and much more</span>
                     </div>
                     <div class="log-line" data-delay="3600">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">approach: Open-source enthusiast / Continuous learner / Sociable person</span>
+                        <span class="log-text" data-i18n="about_approach">approach: Open-source enthusiast / Continuous learner / Sociable person</span>
                     </div>
                     <div class="log-line" data-delay="4800">
                         <span class="log-prefix">&gt;</span>
-                        <span class="log-text">status: 3+ years experience / Available for complex projects</span>
+                        <span class="log-text" data-i18n="about_status">status: 3+ years experience / Available for complex projects</span>
                     </div>
                 </div>
             </div>
@@ -81,7 +84,7 @@
                 <canvas id="skillsCanvas" class="skills-canvas"></canvas>
                 <div class="skill-detail" id="skillDetail">
                     <div class="detail-title">—</div>
-                    <div class="detail-desc">Hover nodes to explore</div>
+                    <div class="detail-desc" data-i18n="skills_hint">Hover nodes to explore</div>
                 </div>
             </div>
         </section>
@@ -90,37 +93,116 @@
             <div class="section-container">
                 <div class="projects-list">
                     <div class="projects-col">
-                        <div class="project-node" data-project="0">
-                            <div class="project-id">PROJECT_01</div>
-                            <div class="project-title">Interactive Dashboard</div>
-                            <div class="project-meta">Real-time systems / WebSockets / State management</div>
+                        <div class="project-node reveal-item" data-project="0">
+                            <img class="project-icon" src="src/money.png" alt="" aria-hidden="true">
+                            <div class="project-content">
+                                <div class="project-id">DETAIL_01</div>
+                                <div class="project-title" data-i18n="project_01_title">Payment</div>
+                                <ul class="project-meta" data-i18n-list="project_01_meta">
+                                    <li>50% prepayment, remaining 50% after completion of work</li>
+                                    <li>100% prepayment is possible when using collateral or a guarantor</li>
+                                    <li>You choose the guarantor</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="project-node" data-project="1">
-                            <div class="project-id">PROJECT_02</div>
-                            <div class="project-title">UI Architecture</div>
-                            <div class="project-meta">Design systems / Tokens / Component library</div>
+                        <div class="project-node reveal-item" data-project="2">
+                            <img class="project-icon" src="src/support.png" alt="" aria-hidden="true">
+                            <div class="project-content">
+                                <div class="project-id">DETAIL_03</div>
+                                <div class="project-title" data-i18n="project_03_title">Support</div>
+                                <ul class="project-meta" data-i18n-list="project_03_meta">
+                                    <li>Support for 14 days after project delivery</li>
+                                    <li>Up to 2 revisions at no additional cost</li>
+                                    <li>Support at all stages of development</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="project-node" data-project="2">
-                            <div class="project-id">PROJECT_03</div>
-                            <div class="project-title">Performance Optimization</div>
-                            <div class="project-meta">Profiling / Core Web Vitals / Bundle analysis</div>
+                        <div class="project-node reveal-item" data-project="4">
+                            <img class="project-icon" src="src/price.png" alt="" aria-hidden="true">
+                            <div class="project-content">
+                                <div class="project-id">DETAIL_05</div>
+                                <div class="project-title" data-i18n="project_05_title">Prices</div>
+                                <ul class="project-meta" data-i18n-list="project_05_meta">
+                                    <li>Cost — from $20 USDT</li>
+                                    <li>Price is based on the complexity of the project</li>
+                                    <li>Work on small projects to improve reputation is possible</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="projects-col">
-                        <div class="project-node" data-project="3">
-                            <div class="project-id">PROJECT_04</div>
-                            <div class="project-title">Automation Toolkit</div>
-                            <div class="project-meta">Bots / Parsers / Integrations / CLI tools</div>
+                        <div class="project-node reveal-item" data-project="1">
+                            <img class="project-icon" src="src/time.png" alt="" aria-hidden="true">
+                            <div class="project-content">
+                                <div class="project-id">DETAIL_02</div>
+                                <div class="project-title" data-i18n="project_02_title">Deadlines</div>
+                                <ul class="project-meta" data-i18n-list="project_02_meta">
+                                    <li>Completion — from 4 hours to 1 month</li>
+                                    <li>Terms are determined by the scope and complexity of the task</li>
+                                    <li>Expedited implementation is possible</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="project-node" data-project="4">
-                            <div class="project-id">PROJECT_05</div>
-                            <div class="project-title">API Platform</div>
-                            <div class="project-meta">REST / Auth / Data modeling / Observability</div>
+                        <div class="project-node reveal-item" data-project="3">
+                            <img class="project-icon" src="src/quality.png" alt="" aria-hidden="true">
+                            <div class="project-content">
+                                <div class="project-id">DETAIL_04</div>
+                                <div class="project-title" data-i18n="project_04_title">Quality</div>
+                                <ul class="project-meta" data-i18n-list="project_04_meta">
+                                    <li>Adherence to high standards of execution</li>
+                                    <li>Use of current technologies and non-standard solutions</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="project-node" data-project="5">
-                            <div class="project-id">PROJECT_06</div>
-                            <div class="project-title">Realtime Experience</div>
-                            <div class="project-meta">WebSockets / Event-driven / UI state</div>
+                        <div class="project-node reveal-item" data-project="5">
+                            <img class="project-icon" src="src/black.png" alt="" aria-hidden="true">
+                            <div class="project-content">
+                                <div class="project-id">DETAIL_06</div>
+                                <div class="project-title" data-i18n="project_06_title">Restrictions</div>
+                                <ul class="project-meta" data-i18n-list="project_06_meta">
+                                    <li>Projects of a “black” nature in the CIS countries are not accepted</li>
+                                    <li>When using geoblocking, the source code is not transferred</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="system-section" id="payment">
+            <div class="section-container">
+                <div class="payment-reveal" id="paymentReveal">
+                    <div class="payment-card reveal-item">
+                        <img class="project-icon" src="src/SBP.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">PAYMENT_01</div>
+                            <div class="project-title">SBP</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="payment_sbp_meta"></ul>
+                        </div>
+                    </div>
+                    <div class="payment-card reveal-item">
+                        <img class="project-icon project-icon--lolz" src="src/lzt.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">PAYMENT_02</div>
+                            <div class="project-title">LolzPay</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="payment_lolzpay_meta"></ul>
+                        </div>
+                    </div>
+                    <div class="payment-card reveal-item">
+                        <img class="project-icon" src="src/CryptoBot.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">PAYMENT_03</div>
+                            <div class="project-title">CryptoBot</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="payment_cryptobot_meta"></ul>
+                        </div>
+                    </div>
+                    <div class="payment-card reveal-item">
+                        <img class="project-icon" src="src/USDT.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">PAYMENT_04</div>
+                            <div class="project-title">USDT</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="payment_usdt_meta"></ul>
                         </div>
                     </div>
                 </div>
@@ -129,25 +211,38 @@
 
         <section class="system-section" id="contact">
             <div class="section-container">
-                <div class="contact-message">
-                    <p class="message-line contact-title">Contacts and Forums</p>
-                </div>
                 <div class="contact-reveal" id="contactReveal">
-                    <a class="contact-item reveal-item" href="https://lolz.live/members/8688653/" target="_blank" rel="noopener noreferrer">
-                        <img class="contact-icon contact-icon--lolz" src="src/lzt.png" alt="" aria-hidden="true">
-                        <span class="contact-label">Lolz</span>
+                    <a class="contact-card reveal-item" href="https://lolz.live/members/8688653/" target="_blank" rel="noopener noreferrer">
+                        <img class="project-icon project-icon--lolz" src="src/lzt.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">CONTACT_01</div>
+                            <div class="project-title" data-i18n="contact_lolz">Lolz</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="contact_lolz_meta"></ul>
+                        </div>
                     </a>
-                    <a class="contact-item reveal-item" href="https://github.com/goger1245" target="_blank" rel="noopener noreferrer">
-                        <img class="contact-icon" src="src/git.png" alt="" aria-hidden="true">
-                        <span class="contact-label">GitHub</span>
+                    <a class="contact-card reveal-item" href="https://github.com/goger1245" target="_blank" rel="noopener noreferrer">
+                        <img class="project-icon" src="src/git.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">CONTACT_02</div>
+                            <div class="project-title" data-i18n="contact_github">GitHub</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="contact_github_meta"></ul>
+                        </div>
                     </a>
-                    <a class="contact-item reveal-item" href="https://t.me/G_o_g1ch" target="_blank" rel="noopener noreferrer">
-                        <img class="contact-icon" src="src/tg.png" alt="" aria-hidden="true">
-                        <span class="contact-label">Telegram</span>
+                    <a class="contact-card reveal-item" href="https://t.me/G_o_g1ch" target="_blank" rel="noopener noreferrer">
+                        <img class="project-icon" src="src/tg.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">CONTACT_03</div>
+                            <div class="project-title" data-i18n="contact_telegram">Telegram</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="contact_telegram_meta"></ul>
+                        </div>
                     </a>
-                    <a class="contact-item reveal-item" href="https://t.me/GogiProger" target="_blank" rel="noopener noreferrer">
-                        <img class="contact-icon" src="src/tg.png" alt="" aria-hidden="true">
-                        <span class="contact-label">Tg Channel</span>
+                    <a class="contact-card reveal-item" href="https://t.me/GogiProger" target="_blank" rel="noopener noreferrer">
+                        <img class="project-icon" src="src/tg.png" alt="" aria-hidden="true">
+                        <div class="project-content">
+                            <div class="project-id">CONTACT_04</div>
+                            <div class="project-title">Tg Channel</div>
+                            <ul class="project-meta contact-meta" data-i18n-list="contact_tg_channel_meta"></ul>
+                        </div>
                     </a>
                 </div>
             </div>
@@ -155,6 +250,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="scripts/i18n.js"></script>
     <script src="scripts/utils.js"></script>
     <script src="components/Node.js"></script>
     <script src="components/Line.js"></script>
@@ -163,5 +259,5 @@
     <script src="scripts/animation.js"></script>
     <script src="scripts/nodes.js"></script>
     <script src="scripts/main.js"></script>
-</body>
-</html>
+    </body>
+    </html>

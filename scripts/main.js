@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  window.SystemI18n?.init?.();
+
   const introScreen = document.getElementById("introScreen");
   const introCanvas = document.getElementById("introCanvas");
   const introHint = document.getElementById("introHint");
