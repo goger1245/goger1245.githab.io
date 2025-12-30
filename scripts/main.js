@@ -17,9 +17,6 @@
   const logLines = Array.from(document.querySelectorAll(".log-line"));
   const aboutAvatarCanvas = document.getElementById("aboutAvatarCanvas");
   const avatarName = document.querySelector(".avatar-name");
-  const skillsCanvas = document.getElementById("skillsCanvas");
-  const skillDetailTitle = document.querySelector("#skillDetail .detail-title");
-  const skillDetailDesc = document.querySelector("#skillDetail .detail-desc");
   const projectNodes = Array.from(document.querySelectorAll(".project-node"));
   const revealItems = Array.from(document.querySelectorAll(".reveal-item"));
 
@@ -49,9 +46,6 @@
       logLines,
       aboutAvatarCanvas,
       avatarName,
-      skillsCanvas,
-      skillDetailTitle,
-      skillDetailDesc,
       projectNodes,
       revealItems,
     });

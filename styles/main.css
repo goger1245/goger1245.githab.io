@@ -68,7 +68,6 @@ body.is-lang-switching [data-i18n-list] {
 
 #introCanvas,
 #bgCanvas,
-#skillsCanvas,
 #aboutAvatarCanvas {
   will-change: contents;
   transform: translateZ(0);
@@ -343,40 +342,6 @@ body.is-lang-switching [data-i18n-list] {
     transform: translateX(-1px);
     opacity: 0.85;
   }
-}
-
-.skills-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  will-change: contents;
-}
-
-.skill-detail {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.detail-title {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--near-white);
-  margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-.detail-desc {
-  font-size: 11px;
-  color: var(--mid-gray);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
 }
 
 .projects-list {

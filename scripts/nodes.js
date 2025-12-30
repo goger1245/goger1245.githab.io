@@ -19,9 +19,6 @@
       logLines,
       aboutAvatarCanvas,
       avatarName,
-      skillsCanvas,
-      skillDetailTitle,
-      skillDetailDesc,
       projectNodes,
       revealItems,
     } = opts;
@@ -279,94 +276,6 @@
       requestAnimationFrame(tickAvatar);
     }
 
-    function setupSkills() {
-      if (!skillsCanvas) return;
-      
-      const ctx = skillsCanvas.getContext("2d");
-      skillsCanvas.width = window.innerWidth;
-      skillsCanvas.height = window.innerHeight;
-
-      const skills = [
-        { label: "JavaScript", x: 0.3, y: 0.4 },
-        { label: "React", x: 0.5, y: 0.3 },
-        { label: "WebGL", x: 0.7, y: 0.45 },
-        { label: "Node.js", x: 0.4, y: 0.6 },
-        { label: "Architecture", x: 0.6, y: 0.65 },
-        { label: "Performance", x: 0.5, y: 0.5 },
-      ];
-
-      const skillNodes = skills.map((s) => 
-        new Node(skillsCanvas.width * s.x, skillsCanvas.height * s.y, s.label)
-      );
-      
-      // Create connections between nearby nodes
-      const skillLines = [];
-      for (let i = 0; i < skillNodes.length; i++) {
-        for (let j = i + 1; j < skillNodes.length; j++) {
-          if (skillNodes[i].pos.dist(skillNodes[j].pos) < 300) {
-            skillLines.push(new Line(skillNodes[i], skillNodes[j]));
-          }
-        }
-      }
-
-      let hoveredSkill = null;
-      let lastSkillsUpdate = 0;
-      const SKILLS_UPDATE_INTERVAL = 1000 / 30;
-
-      function tickSkills(ts = 0) {
-        if (currentSection !== "skills") {
-          requestAnimationFrame(tickSkills);
-          return;
-        }
-        
-        if (ts - lastSkillsUpdate < SKILLS_UPDATE_INTERVAL) {
-          requestAnimationFrame(tickSkills);
-          return;
-        }
-        lastSkillsUpdate = ts;
-
-        ctx.clearRect(0, 0, skillsCanvas.width, skillsCanvas.height);
-        ctx.fillStyle = "#0a0a0a";
-        ctx.fillRect(0, 0, skillsCanvas.width, skillsCanvas.height);
-
-        for (const node of skillNodes) {
-          node.repelFrom(mousePos, 120);
-          node.update();
-        }
-
-        hoveredSkill = null;
-        for (const node of skillNodes) {
-          if (node.pos.dist(mousePos) < 50) {
-            hoveredSkill = node;
-            break;
-          }
-        }
-
-        for (const line of skillLines) {
-          const highlight = hoveredSkill && (line.nodeA === hoveredSkill || line.nodeB === hoveredSkill);
-          line.draw(ctx, highlight);
-        }
-        
-        for (const node of skillNodes) {
-          node.draw(ctx, node === hoveredSkill);
-        }
-
-        if (hoveredSkill) {
-          if (skillDetailTitle) skillDetailTitle.textContent = hoveredSkill.label;
-          if (skillDetailDesc) skillDetailDesc.textContent = t("skills_adapted");
-          if (activeNodeEl) activeNodeEl.textContent = hoveredSkill.label.toUpperCase();
-        } else {
-          if (skillDetailTitle) skillDetailTitle.textContent = "—";
-          if (skillDetailDesc) skillDetailDesc.textContent = t("skills_hint");
-          if (activeNodeEl) activeNodeEl.textContent = "—";
-        }
-
-        requestAnimationFrame(tickSkills);
-      }
-
-      requestAnimationFrame(tickSkills);
-    }
-
     function setupProjects() {
       projectNodes.forEach((node) => {
         const getProjectId = () => node.querySelector(".project-id")?.textContent?.trim();
@@ -437,12 +346,6 @@
     function onResize() {
       bgCanvas.width = window.innerWidth;
       bgCanvas.height = window.innerHeight;
-      
-      if (skillsCanvas) {
-        skillsCanvas.width = window.innerWidth;
-        skillsCanvas.height = window.innerHeight;
-      }
-      
       initBackground();
     }
 
@@ -458,7 +361,6 @@
       
       setupNav();
       setupAbout();
-      setupSkills();
       setupProjects();
       setupContact();
       setupTime();
