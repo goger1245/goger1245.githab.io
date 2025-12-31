@@ -8,7 +8,7 @@
 
   const DICT = Object.freeze({
     en: {
-      doc_title: "System Interface",
+      doc_title: "GogIProger.site",
       intro_hint: "Move to initialize",
       status_system: "SYSTEM",
       status_node: "NODE",
@@ -66,7 +66,7 @@
       lang_toggle_aria: "Switch language",
     },
     ru: {
-      doc_title: "Системный интерфейс",
+      doc_title: "GogIProger.site",
       intro_hint: "Двигай мышью для запуска",
       status_system: "СИСТЕМА",
       status_node: "УЗЕЛ",
@@ -165,7 +165,6 @@
   function applyI18nToDom() {
     const lang = getLang();
     document.documentElement.setAttribute("lang", lang);
-    document.title = t("doc_title");
 
     const nodes = document.querySelectorAll("[data-i18n]");
     nodes.forEach((el) => {
