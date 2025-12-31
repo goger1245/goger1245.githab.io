@@ -4,6 +4,7 @@
   const STORAGE_KEY = "site_lang";
   const DEFAULT_LANG = "en";
   const SWITCH_FADE_MS = 240;
+  const FORCE_DEFAULT_ON_LOAD = true;
 
   const DICT = Object.freeze({
     en: {
@@ -17,10 +18,9 @@
       nav_projects: "02_DETAILS",
       nav_payment: "03_PAYMENT",
       nav_contact: "04_CONTACT",
-      about_name: "name: Goga",
       about_role: "role: Python-JS Developer / Full Stack",
       about_focus: "focus: Automation / Infrastructure / Backend / Frontend",
-      about_stack: "stack: Bots / Parsers / Checkers / Integrations / websites and much more",
+      about_stack: "Areas: Bots / Parsers / Checkers / Integrations / websites and much more",
       about_approach: "approach: Open-source enthusiast / Continuous learner / Sociable person",
       about_status: "status: 3+ years experience / Available for complex projects",
       project_01_title: "Payment",
@@ -53,7 +53,7 @@
         "News and real-time updates\nProject and change announcements\nFast communication and support",
       contact_tg_channel: "Tg Channel",
       contact_tg_channel_meta:
-        "Exclusive content and materials\nBreakdowns, ideas, and behind the scenes\nPosts that aren’t available elsewhere",
+        "Exclusive content and materials\nLeaks of private software and courses, pranks, and behind-the-scenes project info\nDiscount system for regular customers",
       payment_sbp_meta:
         "Global payment system for international transfers\nSupport for fast and secure transactions\nConvenient for different regions and currencies",
       payment_lolzpay_meta:
@@ -76,10 +76,9 @@
       nav_projects: "02_ДЕТАЛИ",
       nav_payment: "03_ОПЛАТА",
       nav_contact: "04_КОНТАКТЫ",
-      about_name: "имя: Goga",
-      about_role: "роль: Python/JS разработчик / Full Stack",
+      about_role: "роль: Python-JS разработчик / Full Stack",
       about_focus: "фокус: Автоматизация / Инфраструктура / Бэкенд / Фронтенд",
-      about_stack: "стек: Боты / Парсеры / Чекеры / Интеграции / Сайты и многое другое",
+      about_stack: "Области: Боты / Парсеры / Чекеры / Интеграции / Сайты и многое другое",
       about_approach: "подход: Open-source / Постоянно учусь / Легко общаюсь",
       about_status: "статус: 3+ года опыта / Доступен для сложных проектов",
       project_01_title: "Оплата",
@@ -112,7 +111,7 @@
         "Новости и апдейты в реальном времени\nАнонсы проектов и изменений\nБыстрая связь и поддержка",
       contact_tg_channel: "ТГ канал",
       contact_tg_channel_meta:
-        "Эксклюзивный контент и материалы\nРазборы, идеи и закулисье проектов\nПубликации, которых нет в других источниках",
+        "Эксклюзивный контент и материалы\nСливы приватных софтов и курсов, розыгрыши и закулисье проектов\nСистема скидок для постоянных клиентов",
       payment_sbp_meta:
         "Глобальная платёжная система для международных переводов\nПоддержка быстрых и безопасных транзакций\nУдобство использования для разных регионов и валют",
       payment_lolzpay_meta:
@@ -136,6 +135,7 @@
   function getLang() {
     if (currentLang) return currentLang;
     const saved = (() => {
+      if (FORCE_DEFAULT_ON_LOAD) return null;
       try {
         return global.localStorage.getItem(STORAGE_KEY);
       } catch {
