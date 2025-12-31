@@ -215,14 +215,14 @@
     try {
       global.localStorage.setItem(STORAGE_KEY, next);
     } catch {
-      // ignore
+      // игнорируем
     }
 
     if (document.body) {
       document.body.classList.add("is-lang-switching");
     }
 
-    // If language didn't change, just refresh DOM without animation.
+    // Если язык не изменился — просто обновляем DOM без анимации.
     if (prev === next) {
       applyI18nToDom();
       if (document.body) document.body.classList.remove("is-lang-switching");
@@ -231,7 +231,7 @@
 
     switchTimer = setTimeout(() => {
       applyI18nToDom();
-      // Let the new text render, then fade it in.
+      // Даём новому тексту отрендериться, затем плавно показываем.
       requestAnimationFrame(() => {
         if (document.body) document.body.classList.remove("is-lang-switching");
       });

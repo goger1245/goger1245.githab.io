@@ -48,7 +48,7 @@
       }, { once: true });
     }
 
-    // Creates new nodes in circular pattern around center
+    // Создаёт новые узлы по кругу вокруг центра
     function growNetwork() {
       if (introNodes.length >= MAX_NODES) return;
 
@@ -72,7 +72,7 @@
       }
       lastIntroUpdate = ts;
 
-      // Calculate delta time normalized to 60fps
+      // Вычисляем delta time, нормированное под 60fps
       const rawDt = lastTs ? (ts - lastTs) / (1000 / 60) : 1;
       const dt = Math.min(2, Math.max(0.5, rawDt));
       lastTs = ts;

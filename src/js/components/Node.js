@@ -28,7 +28,6 @@
       this.applyForce(force);
     }
 
-    // Repulsion force decreases with distance, only active within strength radius
     repelFrom(target, strength = 50) {
       const force = this.pos.clone().sub(target);
       const dist = force.mag();
@@ -38,7 +37,6 @@
       }
     }
 
-    // Physics update: velocity, acceleration, friction, and return to original position
     update() {
       this.vel.add(this.acc);
       this.vel.limit(this.maxSpeed);

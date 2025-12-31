@@ -6,6 +6,8 @@
   const t = (key) => global.SystemI18n?.t?.(key) ?? key;
   const modeForSection = (sectionId) =>
     global.SystemI18n?.modeForSection?.(sectionId) ?? String(sectionId || "").toUpperCase();
+  const createRevealer = global.SystemUI?.createRevealer;
+  const createHoverController = global.SystemUI?.createHoverController;
 
   function createSystemController(opts) {
     const {
@@ -28,12 +30,24 @@
     let isStarted = false;
     let aboutAvatar = null;
     let avatarStarted = false;
+    const getCurrentSection = () => currentSection;
 
     const bgCtx = bgCanvas.getContext("2d");
     let bgNodes = [];
     let bgLines = [];
     let lastBgUpdate = 0;
     const BG_UPDATE_INTERVAL = 1000 / 20;
+
+    const revealer = createRevealer ? createRevealer({ getCurrentSection }) : null;
+    const hoverCtrl = createHoverController
+      ? createHoverController({
+          bgLines,
+          systemModeEl,
+          modeForSection,
+          getCurrentSection,
+          projectNodes,
+        })
+      : null;
 
     function initBackground() {
       bgCanvas.width = window.innerWidth;
@@ -59,7 +73,7 @@
         }
       }
 
-      // Reduced vertical lines for performance
+      // Меньше вертикальных линий для производительности
       for (let i = 0; i < rows - 1; i += 2) {
         for (let j = 0; j < cols; j += 2) {
           const idx = i * cols + j;
@@ -106,93 +120,17 @@
 
       if (systemModeEl) systemModeEl.textContent = modeForSection(name);
 
-      // If we leave the details page while hovering a card, mouseleave may not fire.
-      // Reset any background/hover side-effects so animations don't "stick" across pages.
+      // Если уйти со страницы, пока курсор на карточке, событие mouseleave может не сработать.
+      // Сбрасываем сайд-эффекты ховера/фона, чтобы состояние не “залипало” между вкладками.
       if (prevSection === "projects" && name !== "projects") {
-        resetDetailsHoverState();
+        hoverCtrl?.resetDetailsHoverState?.();
       }
       if ((prevSection === "payment" || prevSection === "contact") && prevSection !== name) {
-        resetCardsHoverState();
+        hoverCtrl?.resetCardsHoverState?.();
       }
 
-      if (prevSection !== name) stopReveal();
-      if (name === "contact" || name === "payment" || name === "projects") {
-        if (!hasRevealedOnce[name]) {
-          hasRevealedOnce[name] = true;
-          startReveal(name);
-        } else {
-          showAllRevealed(name);
-        }
-      }
-    }
-
-    let revealTimer = null;
-    const hasRevealedOnce = {
-      projects: false,
-      payment: false,
-      contact: false,
-    };
-
-    function stopReveal() {
-      if (revealTimer) {
-        clearInterval(revealTimer);
-        revealTimer = null;
-      }
-    }
-
-    function showAllRevealed(sectionId) {
-      const sectionEl = document.getElementById(sectionId);
-      if (!sectionEl) return;
-      const items = Array.from(sectionEl.querySelectorAll(".reveal-item"));
-      items.forEach((el) => el.classList.add("revealed"));
-    }
-
-    function resetDetailsHoverState() {
-      bgLines.forEach((line) => (line.opacity = 0.2));
-      projectNodes.forEach((n) => n.classList.remove("active"));
-    }
-
-    function resetCardsHoverState() {
-      bgLines.forEach((line) => (line.opacity = 0.2));
-    }
-
-    function startReveal(sectionId) {
-      stopReveal();
-
-      const sectionEl = document.getElementById(sectionId);
-      if (!sectionEl) return;
-
-      const items = Array.from(sectionEl.querySelectorAll(".reveal-item"));
-      items.forEach((el) => el.classList.remove("revealed"));
-
-      // Reveal in visual order (top-to-bottom, left-to-right) so 2-column layouts animate 1-2-3-4-5-6.
-      items.sort((a, b) => {
-        const ra = a.getBoundingClientRect();
-        const rb = b.getBoundingClientRect();
-        const topDiff = ra.top - rb.top;
-        if (Math.abs(topDiff) > 4) return topDiff;
-        return ra.left - rb.left;
-      });
-
-      let idx = 0;
-      const STEP_MS = 260;
-
-      const step = () => {
-        if (currentSection !== sectionId) {
-          stopReveal();
-          return;
-        }
-
-        if (idx < items.length) {
-          items[idx].classList.add("revealed");
-          idx++;
-        } else {
-          stopReveal();
-        }
-      };
-
-      step();
-      revealTimer = setInterval(step, STEP_MS);
+      if (prevSection !== name) revealer?.stop?.();
+      revealer?.onEnter?.(name);
     }
 
     function setupNav() {
@@ -229,7 +167,7 @@
         aboutAvatarCanvas.width = 300;
         aboutAvatarCanvas.height = 300;
 
-        aboutAvatar = new AvatarParticles(aboutAvatarCanvas, 'src/converted_image.png', {
+        aboutAvatar = new AvatarParticles(aboutAvatarCanvas, "src/assets/converted_image.png", {
           particleSize: 1.9,
           samplingRate: 3,
           targetSize: 280,
@@ -239,7 +177,7 @@
           await aboutAvatar.load();
           showSection("about");
         } catch (err) {
-          // Avatar image failed to load
+          // Не удалось загрузить изображение аватара
         }
       }
     }
@@ -277,51 +215,13 @@
     }
 
     function setupProjects() {
-      projectNodes.forEach((node) => {
-        const getProjectId = () => node.querySelector(".project-id")?.textContent?.trim();
-
-        node.addEventListener("mouseenter", () => {
-          const HOVER_BG_OPACITY = 0.1;
-          bgLines.forEach((line) => (line.opacity = HOVER_BG_OPACITY));
-          if (systemModeEl) {
-            const projectId = node.querySelector(".project-id")?.textContent?.trim();
-            systemModeEl.textContent = projectId || currentSection.toUpperCase();
-          }
-        });
-        
-        node.addEventListener("mouseleave", () => {
-          bgLines.forEach((line) => (line.opacity = 0.2));
-          if (systemModeEl) systemModeEl.textContent = modeForSection(currentSection);
-        });
-      });
+      hoverCtrl?.bindProjectHover?.();
     }
 
     function setupContact() {
-      // reveal is handled on section switch (see showSection)
-      const paymentCards = Array.from(document.querySelectorAll("#payment .payment-card"));
-      const contactCards = Array.from(document.querySelectorAll("#contact .contact-card"));
-      const hoverTargets = [
-        ...paymentCards.map((el) => ({ el, section: "payment" })),
-        ...contactCards.map((el) => ({ el, section: "contact" })),
-      ];
-
-      for (const { el, section } of hoverTargets) {
-        const getId = () => el.querySelector(".project-id")?.textContent?.trim();
-
-        el.addEventListener("pointerenter", (e) => {
-          if (currentSection !== section) return;
-          bgLines.forEach((line) => (line.opacity = 0.1));
-          if (systemModeEl) {
-            systemModeEl.textContent = getId() || modeForSection(currentSection);
-          }
-        });
-
-        el.addEventListener("pointerleave", (e) => {
-          if (currentSection !== section) return;
-          bgLines.forEach((line) => (line.opacity = 0.2));
-          if (systemModeEl) systemModeEl.textContent = modeForSection(currentSection);
-        });
-      }
+      // reveal запускается при переключении секции (см. showSection)
+      hoverCtrl?.bindCardHover?.({ selector: "#payment .payment-card", sectionId: "payment" });
+      hoverCtrl?.bindCardHover?.({ selector: "#contact .contact-card", sectionId: "contact" });
     }
 
     function setupTime() {

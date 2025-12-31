@@ -11,7 +11,7 @@
       this.particles = [];
     }
 
-    // Samples text pixels and maps them to particles starting from node positions
+    // Семплирует пиксели текста и сопоставляет их с частицами, стартуя из позиций узлов
     formFromNodes(nodes) {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
@@ -49,7 +49,7 @@
       }
     }
 
-    // Spring-damper physics for smooth particle movement
+    // Пружинно-демпферная физика для плавного движения частиц
     update(dt = 1) {
       const SPRING_CONSTANT = 0.10;
       const DAMPING = 0.86;
